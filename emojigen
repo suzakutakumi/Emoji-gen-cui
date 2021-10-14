@@ -10,6 +10,13 @@ function randRGB(){
 COLOR=$1
 NAME=$2
 
+if [[ $COLOR =~ [A-F] ]] ;
+then
+  COLOR="${COLOR}FF"
+else
+  COLOR="${COLOR}ff"
+fi
+
 for OPT in "$@"
 do
   case "$OPT" in
@@ -25,4 +32,6 @@ then
   NAME=$2
 fi
 
-curl "https://emoji-gen.ninja/emoji_download?align=center&amp;back_color=00000000&amp;color=$COLOR&amp;font=notosans-mono-bold&amp;locale=ja&amp;public_fg=true&amp;size_fixed=false&amp;stretch=true&amp;text=$NAME" -o $NAME.png
+TEXT=$(echo $NAME|sed s/_/%0A/g)
+
+curl -s "https://emoji-gen.ninja/emoji_download?align=center&amp;back_color=00000000&amp;color=$COLOR&amp;font=notosans-mono-bold&amp;locale=ja&amp;public_fg=true&amp;size_fixed=false&amp;stretch=true&amp;text=$TEXT" -o $NAME.png
