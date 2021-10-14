@@ -1,0 +1,28 @@
+#!/bin/bash
+
+function randRGB(){
+  chars="0123456789ABCDEF"
+  for i in {1..6}; do
+    echo -n "${chars:$(($RANDOM%16)):1}"
+  done
+}
+
+COLOR=$1
+NAME=$2
+
+for OPT in "$@"
+do
+  case "$OPT" in
+    "-r"|"--random")
+      FLG_RAND="TRUE"
+      ;;
+  esac
+done
+
+if [ "$FLG_RAND" = "TRUE" ];
+then
+  COLOR=$(randRGB)FF
+  NAME=$2
+fi
+
+curl "https://emoji-gen.ninja/emoji_download?align=center&amp;back_color=00000000&amp;color=$COLOR&amp;font=notosans-mono-bold&amp;locale=ja&amp;public_fg=true&amp;size_fixed=false&amp;stretch=true&amp;text=$NAME" -o $NAME.png
